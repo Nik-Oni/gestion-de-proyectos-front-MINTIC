@@ -39,9 +39,9 @@ const PrivateLayout = () => {
 
   if (loadingMutation || loadingAuth) return <div>Loading...</div>;
 
-/*   if (!authToken) {
+  if (!authToken) {
     navigate('/auth/login')
-  } */
+  }
 
   return (
     <div className='flex flex-col md:flex-row flex-no-wrap h-screen'>
