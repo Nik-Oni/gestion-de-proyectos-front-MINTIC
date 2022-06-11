@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PrivateLayout from "layouts/PrivateLayout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserContext } from "context/userContext";
@@ -21,7 +21,7 @@ import Register from "pages/auth/register";
 import Login from "pages/auth/login";
 import AuthLayout from "layouts/AuthLayout";
 import { AuthContext } from "context/authContext";
-
+import jwt_decode from "jwt-decode";
 // import PrivateRoute from 'components/PrivateRoute';
 
 const httpLink = createHttpLink({
@@ -53,8 +53,24 @@ function App() {
     setAuthToken(token);
     if (token) {
       localStorage.setItem("token", JSON.stringify(token));
+    } else {
+      localStorage.removeItem("token");
     }
   };
+
+  useEffect(() => {
+    if (authToken) {
+      const decoded = jwt_decode(authToken);
+      setUserData({
+        _id: decoded._id,
+        nombre: decoded.nombre,
+        apellido: decoded.apellido,
+        identificacion: decoded.identificacion,
+        correo: decoded.correo,
+        rol: decoded.rol,
+      });
+    }
+  }, [authToken]);
 
   return (
     <ApolloProvider client={client}>
@@ -65,7 +81,10 @@ function App() {
               <Route path="/" element={<PrivateLayout />}>
                 <Route path="" element={<Index />} />
                 <Route path="/usuarios" element={<IndexUsuarios />} />
-                <Route path="/usuarios/editar/:_id" element={<EditarUsuario />} />
+                <Route
+                  path="/usuarios/editar/:_id"
+                  element={<EditarUsuario />}
+                />
                 <Route path="page2" element={<Page2 />} />
                 <Route path="category1" element={<IndexCategory1 />} />
                 <Route path="category1/page1" element={<Category1 />} />

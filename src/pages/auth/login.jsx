@@ -36,7 +36,7 @@ const Login = () => {
   }, [dataMutation, setToken, navigate]);
   return (
     <div className="flex flex-col h-full w-full items-center justify-center">
-      <h1 className="text-3xl font-bols my-4">Regístrate</h1>
+      <h1 className="text-3xl font-bols my-4">Iniciar sesión</h1>
       <form
         className="flex flex-col"
         onSubmit={submitForm}
